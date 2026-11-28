@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+    <title>Adhan Home</title>
+    <meta name="description" content="Prayer times, the adhan for your whole home, the Quran with 24 sheikhs, and Arabic for kids and grown-ups." />
+    <meta name="theme-color" content="#0F5C4D" />
+    <link rel="manifest" href="/adhan-home-app/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/adhan-home-app/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Adhan Home" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <style id="expo-reset">
+      html,
+      body {
+        height: 100%;
+        background: #06101f;
+      }
+      body {
+        overflow: hidden;
+      }
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+    </style>
+  <link rel="icon" href="/adhan-home-app/favicon.ico"/><link rel="preload" href="/adhan-home-app/_expo/static/css/leaflet-df687fead8c4838a4e6b8bcb2f176a0e.css" as="style">
+<link rel="stylesheet" href="/adhan-home-app/_expo/static/css/leaflet-df687fead8c4838a4e6b8bcb2f176a0e.css"></head>
+
+  <body>
+    <noscript>You need to turn on JavaScript to run Adhan Home.</noscript>
+    <div id="root"></div>
+    <script>
+      // Install support: register the service worker on real web hosts only.
+      if ('serviceWorker' in navigator && location.protocol === 'https:' && !/claudeusercontent|claude\.ai/.test(location.host)) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/adhan-home-app/sw.js', { scope: '/adhan-home-app/' }).catch(function () {});
+        });
+      }
+      // Remember the install prompt until the app asks for it.
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__ahInstall = e;
+        window.dispatchEvent(new Event('ah-installable'));
+      });
+    </script>
+  <script src="/adhan-home-app/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" defer></script><script src="/adhan-home-app/_expo/static/js/web/__common-e4e8853fef8e06c6b5b8a0d1ca35173c.js" defer></script><script src="/adhan-home-app/_expo/static/js/web/entry-ab1f5160501897b9e1a3a00da8d13e89.js" defer></script>
+</body>
+</html>

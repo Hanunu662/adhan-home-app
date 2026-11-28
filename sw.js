@@ -1,7 +1,7 @@
 // Adhan Home service worker: lets the desktop/browser version open offline and load fast.
 // App files have hashed names, so they're cached forever; the page itself is
 // fetched fresh when online and served from cache when offline.
-const VERSION = 'adhan-home-v72';
+const VERSION = 'adhan-home-v73';
 const BASE = '/adhan-home-app';
 const SHELL = [BASE + '/', BASE + '/manifest.webmanifest', BASE + '/icons/icon-192.png', BASE + '/icons/icon-512.png'];
 

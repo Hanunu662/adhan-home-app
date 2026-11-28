@@ -1,7 +1,7 @@
 // Adhan Home service worker: lets the desktop/browser version open offline and load fast.
 // App files have hashed names, so they're cached forever; the page itself is
 // fetched fresh when online and served from cache when offline.
-const VERSION = 'adhan-home-v84';
+const VERSION = 'adhan-home-v85';
 const BASE = '/adhan-home-app';
 const SHELL = [BASE + '/', BASE + '/manifest.webmanifest', BASE + '/icons/icon-192.png', BASE + '/icons/icon-512.png'];
 
@@ -71,13 +71,41 @@ self.addEventListener('fetch', (event) => {
   }
 });
 
-// Clicking a prayer notification brings the app forward.
+// Alerts sent by the server (web push), so they arrive even when Adhan Home is closed.
+self.addEventListener('push', (event) => {
+  let d = {};
+  try {
+    d = event.data ? event.data.json() : {};
+  } catch (e) {
+    d = { body: event.data ? event.data.text() : '' };
+  }
+  const title = d.title || 'Adhan Home';
+  const icon = new URL('icons/icon-192.png', self.registration.scope).href;
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body: d.body || '',
+      icon,
+      badge: icon,
+      // The same tag as the alert the open app shows, so the two never double up.
+      tag: d.tag || title,
+      data: { url: d.url || '/' },
+    }),
+  );
+});
+
+// Clicking a notification brings the app forward, on the right screen.
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  const path = String((event.notification.data && event.notification.data.url) || '/').replace(/^\/+/, '');
+  const target = new URL(path, self.registration.scope).href;
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
       const open = list.find((c) => 'focus' in c);
-      return open ? open.focus() : self.clients.openWindow(BASE + '/');
+      if (open) {
+        if (path && 'navigate' in open) open.navigate(target).catch(() => {});
+        return open.focus();
+      }
+      return self.clients.openWindow(target);
     }),
   );
 });

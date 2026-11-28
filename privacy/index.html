@@ -36,6 +36,28 @@
     <noscript>You need to turn on JavaScript to run Adhan Home.</noscript>
     <div id="root"></div>
     <script>
+      // After an update, a page that was already open can ask for a file from the old version.
+      // If a screen fails to load that way, load the page again once to pick up the new version.
+      (function () {
+        function stale(m) {
+          return /AsyncRequireError|Loading module .* failed|dynamically imported module|ChunkLoadError/i.test(String(m || ''));
+        }
+        function again() {
+          try {
+            var t = Number(sessionStorage.getItem('ah-reloaded')) || 0;
+            if (Date.now() - t < 30000) return;
+            sessionStorage.setItem('ah-reloaded', String(Date.now()));
+          } catch (e) {}
+          location.reload();
+        }
+        window.addEventListener('error', function (e) {
+          if (stale(e.message || (e.error && (e.error.name + ' ' + e.error.message)))) again();
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+          var r = e.reason;
+          if (stale(r && (r.name + ' ' + r.message))) again();
+        });
+      })();
       // Install support: register the service worker on real web hosts only.
       if ('serviceWorker' in navigator && location.protocol === 'https:' && !/claudeusercontent|claude\.ai/.test(location.host)) {
         window.addEventListener('load', function () {
@@ -49,6 +71,6 @@
         window.dispatchEvent(new Event('ah-installable'));
       });
     </script>
-  <script src="/adhan-home-app/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" defer></script><script src="/adhan-home-app/_expo/static/js/web/__common-c861b6ddbe07df6f6be51e58a9aeed9c.js" defer></script><script src="/adhan-home-app/_expo/static/js/web/entry-ef870049b854ce4eeba32f89eea737e0.js" defer></script>
+  <script src="/adhan-home-app/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" defer></script><script src="/adhan-home-app/_expo/static/js/web/__common-f4b376d0c4c8b537c53256d2f92c4ca7.js" defer></script><script src="/adhan-home-app/_expo/static/js/web/entry-da9adce6f237bfa7ecb9232647e144ca.js" defer></script>
 </body>
 </html>
